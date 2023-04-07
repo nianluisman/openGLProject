@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Res">
+      <UniqueIdentifier>{d265d8c0-3acc-4a20-8118-1c908657310a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Res\shaders">
+      <UniqueIdentifier>{2d570ce8-5303-4a52-806e-5b8e116acfdd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -21,5 +27,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Nodes.md" />
+    <None Include="basic.shader">
+      <Filter>Res\shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
