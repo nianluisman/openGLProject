@@ -166,13 +166,13 @@ void viewkeyboard(unsigned char key, int x, int y) {
             view = glm::rotate(view, glm::radians(angle), glm::vec3(0.0f, 1.0f, 0.0f));
             break;
         case 'e':
-            view = glm::rotate(view, glm::radians(angle), glm::vec3(0.0f, 1.0f, 0.0f));
+            view = glm::rotate(view, glm::radians(-angle), glm::vec3(0.0f, 1.0f, 0.0f));
             break;
         case '1':
-            camRotY += 1.0f;
+            view = glm::rotate(view, glm::radians(angle), glm::vec3(0.0f, 0.0f, 1.0f));
             break;
         case '3':
-            camRotY -= 1.0f;
+            view = glm::rotate(view, glm::radians(angle), glm::vec3(0.0f, 0.0f, -1.0f));
             break;
         }
     if (key == 27)
@@ -247,18 +247,39 @@ bool loadTexture(const char* filename, unsigned int* textureID) {
     *textureID = texID;
     return true;
 }
+// Define the vertex data
+struct Vertex {
+    glm::vec3 position;
+    glm::vec3 color;
+    glm::vec2 texCoord;
+};
 
 float vertices[] = {
-    // positions          // colors           // texture coords
-     0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
-     0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
-    -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
-    -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left 
+    // position              color            texCoord
+    -0.5f, -0.5f, -0.5f     ,1.0f, 0.0f, 0.0f    ,0.0f, 0.0f,
+    0.5f, -0.5f, -0.5f      ,0.0f, 1.0f, 0.0f    ,1.0f, 0.0f,
+    0.5f,  0.5f, -0.5f      ,0.0f, 0.0f, 1.0f    ,1.0f, 1.0f,
+    -0.5f,  0.5f, -0.5f     ,1.0f, 1.0f, 0.0f    ,0.0f, 1.0f,
+    -0.5f, -0.5f,  0.5f    ,0.0f, 1.0f, 1.0f    ,0.0f, 0.0f,
+    0.5f, -0.5f,  0.5f     ,1.0f, 0.0f, 1.0f    ,1.0f, 0.0f,
+    0.5f,  0.5f,  0.5f     ,0.5f, 0.5f, 0.5f    ,1.0f, 1.0f,
+    -0.5f,  0.5f,  0.5f    ,1.0f, 1.0f, 1.0f    ,0.0f, 1.0f
 };
-// Define the indices of the rectangle
+
+// Define the index data
 GLuint indices[] = {
-    0, 1, 3,
-    1, 2, 3
+    0, 1, 2, // front
+    2, 3, 0,
+    1, 5, 6, // right
+    6, 2, 1,
+    7, 6, 5, // back
+    5, 4, 7,
+    4, 0, 3, // left
+    3, 7, 4,
+    4, 5, 1, // bottom
+    1, 0, 4,
+    3, 2, 6, // top
+    6, 7, 3
 };
 
 void renderScene(void) {
@@ -272,9 +293,23 @@ void renderScene(void) {
     glUniformMatrix4fv(glGetUniformLocation(shader, "view"), 1, GL_FALSE, glm::value_ptr(view));
     glUniformMatrix4fv(glGetUniformLocation(shader, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
     glBindTexture(GL_TEXTURE_2D, imageID);
-    glUseProgram(shader);
+
     glBindVertexArray(VAO);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+    // Set the model matrix for the first cube
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::translate(model, glm::vec3(-0.5f, 0.0f, 0.0f)); // Translate to the left
+    glUniformMatrix4fv(glGetUniformLocation(shader, "model"), 1, GL_FALSE, glm::value_ptr(model));
+    glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(GLuint), GL_UNSIGNED_INT, 0);
+
+    // Set the model matrix for the second cube
+    model = glm::mat4(1.0f);
+    model = glm::translate(model, glm::vec3(0.5f, 0.0f, 0.0f)); // Translate to the right
+    glUniformMatrix4fv(glGetUniformLocation(shader, "model"), 1, GL_FALSE, glm::value_ptr(model));
+    glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(GLuint), GL_UNSIGNED_INT, 0);
+
+
+   // glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(GLuint), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 
     glutSwapBuffers();
@@ -333,13 +368,13 @@ int main(int argc, char** argv) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3* sizeof(float)));
     glEnableVertexAttribArray(1);
 
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(6 * sizeof(GLfloat)));
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
     glEnableVertexAttribArray(2);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
