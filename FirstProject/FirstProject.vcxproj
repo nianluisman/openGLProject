@@ -76,13 +76,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;_MBCS%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)dependecies\OPENGL\include;$(SolutionDir)dependecies\glew-2.1.0\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)dependecies\OPENGL\include;$(SolutionDir)dependecies\glew-2.1.0\include;$(SolutionDir)dependecies\freeglut\freeglut\include;$(SolutionDir)dependecies\glm-0.9.6.3\glm;$(SolutionDir)dependecies\SOIL2\src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)dependecies\OPENGL\lib-vc2022;$(SolutionDir)dependecies\glew-2.1.0\lib\Release\x64</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32s.lib;glfw3.lib;opengl32.lib;User32.lib;Gdi32.lib;Shell32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)dependecies\OPENGL\lib-vc2022;$(SolutionDir)dependecies\freeglut\freeglut\lib;$(SolutionDir)dependecies\glew-2.1.0\lib\Release\Win32;$(SolutionDir)dependecies\SOIL2\lib\windows</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glew32s.lib;soil2-debug.lib;glfw3.lib;freeglut.lib;opengl32.lib;User32.lib;Gdi32.lib;Shell32.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -93,15 +93,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;_MBCS%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)dependecies\OPENGL\include;$(SolutionDir)dependecies\glew-2.1.0\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)dependecies\OPENGL\include;$(SolutionDir)dependecies\glew-2.1.0\include;$(SolutionDir)dependecies\freeglut\freeglut\include;$(SolutionDir)dependecies\glm-0.9.6.3\glm;$(SolutionDir)dependecies\SOIL2\src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)dependecies\OPENGL\lib-vc2022;$(SolutionDir)dependecies\glew-2.1.0\lib\Release\x64</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32s.lib;glfw3.lib;opengl32.lib;User32.lib;Gdi32.lib;Shell32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)dependecies\OPENGL\lib-vc2022;$(SolutionDir)dependecies\freeglut\freeglut\lib;$(SolutionDir)dependecies\glew-2.1.0\lib\Release\Win32;$(SolutionDir)dependecies\SOIL2\lib\windows</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glew32s.lib;soil2-debug.lib;glfw3.lib;freeglut.lib;opengl32.lib;User32.lib;Gdi32.lib;Shell32.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -110,13 +110,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;_MBCS%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)dependecies\OPENGL\include;$(SolutionDir)dependecies\glew-2.1.0\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)dependecies\OPENGL\include;$(SolutionDir)dependecies\glew-2.1.0\include;$(SolutionDir)dependecies\freeglut\freeglut\include;$(SolutionDir)dependecies\SOIL2\src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)dependecies\OPENGL\lib-vc2022;$(SolutionDir)dependecies\glew-2.1.0\lib\Release\x64</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32s.lib;glfw3.lib;opengl32.lib;User32.lib;Gdi32.lib;Shell32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)dependecies\OPENGL\lib-vc2022;$(SolutionDir)dependecies\freeglut\freeglut\lib\x64;$(SolutionDir)dependecies\glew-2.1.0\lib\Release\x64;$(SolutionDir)dependecies\SOIL2\lib\windows</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glew32s.lib;soil2-debug.lib;glfw3.lib;freeglut.lib;opengl32.lib;User32.lib;Gdi32.lib;Shell32.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -127,23 +127,39 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;_MBCS%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)dependecies\OPENGL\include;$(SolutionDir)dependecies\glew-2.1.0\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)dependecies\OPENGL\include;$(SolutionDir)dependecies\glew-2.1.0\include;$(SolutionDir)dependecies\freeglut\freeglut\include;$(SolutionDir)dependecies\SOIL2\src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)dependecies\OPENGL\lib-vc2022;$(SolutionDir)dependecies\glew-2.1.0\lib\Release\x64</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32s.lib;glfw3.lib;opengl32.lib;User32.lib;Gdi32.lib;Shell32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)dependecies\OPENGL\lib-vc2022;$(SolutionDir)dependecies\freeglut\freeglut\lib\x64;$(SolutionDir)dependecies\glew-2.1.0\lib\Release\x64;$(SolutionDir)dependecies\SOIL2\lib\windows</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glew32s.lib;soil2-debug.lib;glfw3.lib;freeglut.lib;opengl32.lib;User32.lib;Gdi32.lib;Shell32.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="bufferHandler.cpp" />
+    <ClCompile Include="Draw.cpp" />
+    <ClCompile Include="FileHandler.cpp" />
+    <ClCompile Include="indexBuffer.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="VertexArray.cpp" />
+    <ClCompile Include="vertexBuffer.cpp" />
+    <ClCompile Include="VertexBufferLayout.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="basic.shader" />
     <None Include="Nodes.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="bufferHandler.h" />
+    <ClInclude Include="Draw.h" />
+    <ClInclude Include="FileHandler.h" />
+    <ClInclude Include="indexBuffer.h" />
+    <ClInclude Include="VertexArray.h" />
+    <ClInclude Include="vertexBuffer.h" />
+    <ClInclude Include="VertexBufferLayout.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
