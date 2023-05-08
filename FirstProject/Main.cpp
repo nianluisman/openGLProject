@@ -38,8 +38,8 @@ struct shaderPrograms {
 float angle = 0.0f;
 unsigned int shader, VAOCube, imageID_Floor, imageID_Wall, imageID_Door;
 shaderPrograms shaderprogram;
-unsigned int VAO_Treemodel, VBO_Treemodel, VAO_CarModel, VAO_Theapot, VBO_Theapot;
-std::vector<float> verticesTree , verticesCar, verticesTheapot;
+unsigned int VAO_Treemodel, VBO_Treemodel, VAO_CarModel, VAO_Theapot, VBO_Theapot, VAO_table, VBO_table;
+std::vector<float> verticesTree , verticesCar, verticesTheapot, verticesTable;
 const aiMesh* meshModel;
 
 // Define global variables for the camera position and rotation
@@ -279,10 +279,6 @@ std::vector<glm::vec3> out_vertices = std::vector<glm::vec3>();
 std::vector<glm::vec2> out_uvs = std::vector<glm::vec2>();
 std::vector<glm::vec3> out_normals = std::vector<glm::vec3>();
 
-std::vector<glm::vec3> car_out_vertices = std::vector<glm::vec3>();
-std::vector<glm::vec2> car_out_uvs = std::vector<glm::vec2>();
-std::vector<glm::vec3> car_out_normals = std::vector<glm::vec3>();
-std::vector<unsigned short> car_indecs = std::vector<unsigned short>();
 void initBuffers() {
 
     objectLoader objLoader = objectLoader();
@@ -313,15 +309,15 @@ void initBuffers() {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 
-    //verticesTheapot = objLoader.loadModel("objects/teapot.obj");
-    loadOBJ("objects/teapot.obj", out_vertices, out_uvs, out_normals);
+    verticesTheapot = objLoader.loadModel("objects/teapot.obj");
+    //loadOBJ("objects/teapot.obj", out_vertices, out_uvs, out_normals);
 
     glGenVertexArrays(1, &VAO_Theapot);
     glBindVertexArray(VAO_Theapot);
     glGenBuffers(1, &VBO_Theapot);
     //// Bind the VBO and pass the vertex data to it
     glBindBuffer(GL_ARRAY_BUFFER, VBO_Theapot);
-    glBufferData(GL_ARRAY_BUFFER, out_vertices.size() * sizeof(glm::vec3), &out_vertices.front(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, verticesTheapot.size() * sizeof(float), &verticesTheapot.front(), GL_STATIC_DRAW);
 
     //uto positonLocation = glGetUniformLocation(shaderprogram.textureProgram, "aPos");
 
@@ -329,6 +325,26 @@ void initBuffers() {
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+
+
+    verticesTable = objLoader.loadModel("objects/Table.obj");
+    //loadOBJ("objects/teapot.obj", out_vertices, out_uvs, out_normals);
+
+    glGenVertexArrays(1, &VAO_table);
+    glBindVertexArray(VAO_table);
+    glGenBuffers(1, &VBO_table);
+    //// Bind the VBO and pass the vertex data to it
+    glBindBuffer(GL_ARRAY_BUFFER, VBO_table);
+    glBufferData(GL_ARRAY_BUFFER, verticesTable.size() * sizeof(float), &verticesTable.front(), GL_STATIC_DRAW);
+
+    //uto positonLocation = glGetUniformLocation(shaderprogram.textureProgram, "aPos");
+
+    //// Specify the vertex attribute pointers
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
 
     verticesTree = objLoader.loadModel("objects/Tree1.3ds");
     
@@ -479,6 +495,7 @@ void drawAndAnimateCar() {
 
 }
 void drawHouse() {
+    glBindVertexArray(VAOCube);
     Draw* draw = new Draw();
     glm::mat4 model = glm::mat4(1.0f);
     glBindTexture(GL_TEXTURE_2D, imageID_Wall);
@@ -494,7 +511,7 @@ void drawHouse() {
     model = glm::translate(model, glm::vec3(0.f, 0.0f, 0.3f)); 
     model = glm::scale(model, glm::vec3(0.5f, 0.9f, 0.5f)); 
     glUniformMatrix4fv(glGetUniformLocation(shaderprogram.textureProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
-    glDrawElements(GL_TRIANGLE_FAN, sizeof(indices) / sizeof(GLuint), GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(GLuint), GL_UNSIGNED_INT, 0);
 
     glUseProgram(0);
     glUseProgram(shaderprogram.ColorProgram);
@@ -521,17 +538,52 @@ void drawHouse() {
     glPopMatrix();
 
 }
+
+float angleTheapot = 0.0f; // initial angle
+float rotationSpeed = glm::radians(45.0f); // rotation speed in radians per second
+float distance = 1.0f; // distance of translation in x-axis
+float x = 0.0f; // current x-position of the model
+float lastTime = 0.0f;
 void drawTheaPot() {
     glUseProgram(0);
     glUseProgram(shaderprogram.ColorProgram);
+    glBindVertexArray(VAO_Theapot);
     GLint colorLocation = glGetUniformLocation(shaderprogram.ColorProgram, "color");
-    glUniform4f(colorLocation, 0.0f, 1.0f, 0.0, 0.0);
+    glUniform4f(colorLocation, 1.0f, 0.843f, 0.0f, 1.0f);
     glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(0.f, 0.0f,0.0f ));
-    model = glm::scale(model, glm::vec3(0.05, 0.05, 0.05));
-    glDrawArrays(GL_TRIANGLES, 0, out_vertices.size());
+    model = glm::translate(model, glm::vec3(3.f, 0.1f,3.0f ));
+    model = glm::scale(model, glm::vec3(0.2, 0.2, 0.2));
+
+    float currentTime = glfwGetTime();
+    float deltaTime = currentTime - lastTime;
+    lastTime = currentTime;
+
+    angleTheapot = fmod(angleTheapot + rotationSpeed * deltaTime, glm::radians(720.0f));
+    x = distance * sin(angleTheapot);
+
+    model = glm::rotate(model, angleTheapot, glm::vec3(0.0, 1.0f, 0.0f));
+    model = glm::translate(model, glm::vec3(x, 0.0f, 0.0f));
+
+
+    glUniformMatrix4fv(glGetUniformLocation(shaderprogram.ColorProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
+    glDrawArrays(GL_TRIANGLES, 0, verticesTheapot.size());
+ }
+void drawTable() {
+    glUseProgram(0);
+    glUseProgram(shaderprogram.ColorProgram);
+    glBindVertexArray(VAO_table);
+    GLint colorLocation = glGetUniformLocation(shaderprogram.ColorProgram, "color");
+    glUniform4f(colorLocation, 0.5f, 0.5f, 0.5f, 1.0f);
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::translate(model, glm::vec3(3.0f, -0.5f, 3.0f));
+    model = glm::scale(model, glm::vec3(0.2, 0.2, 0.2));
+    model = glm::rotate(model, glm::radians(-45.0f), glm::vec3(0.0f,1.0f,0.0f));
+    glUniformMatrix4fv(glGetUniformLocation(shaderprogram.ColorProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
+    glDrawArrays(GL_TRIANGLES, 0, verticesTable.size());
 }
 void drawFLoor() {
+    glBindVertexArray(VAOCube);
+    glBindTexture(GL_TEXTURE_2D, imageID_Floor);
     // Set the model matrix for the first cube
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(-0.5f, -0.5f, 0.0f)); // Translate to the left
@@ -540,6 +592,7 @@ void drawFLoor() {
     glUniformMatrix4fv(glGetUniformLocation(shaderprogram.ColorProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
     glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(GLuint), GL_UNSIGNED_INT, 0);
     glutPostRedisplay();
+
 }
 
 void DrawAndAnimateLightPost() {
@@ -609,20 +662,23 @@ void renderScene(void) {
     glUniformMatrix4fv(glGetUniformLocation(shaderprogram.textureProgram, "view"), 1, GL_FALSE, glm::value_ptr(view));
     glUniformMatrix4fv(glGetUniformLocation(shaderprogram.textureProgram, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
-    glBindTexture(GL_TEXTURE_2D, imageID_Floor);
-    glBindVertexArray(VAOCube);
+    
+   
+
 
     drawFLoor();
     drawHouse();
-    glUseProgram(0);
-    glUseProgram(shaderprogram.ColorProgram);
-    glBindVertexArray(VAO_Theapot);
-    drawTheaPot();
+
+
+   
 
     //set view for color shader objects
     glUniformMatrix4fv(glGetUniformLocation(shaderprogram.ColorProgram, "view"), 1, GL_FALSE, glm::value_ptr(view));
     glUniformMatrix4fv(glGetUniformLocation(shaderprogram.ColorProgram, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
     glUseProgram(0);
+
+    drawTheaPot();
+    drawTable();
 
     glUseProgram(shaderprogram.textureProgram);
     glBindVertexArray(VAO_Treemodel);
@@ -682,7 +738,10 @@ void mouse_callback(int xposIn, int yposIn)
 }
 
 int main(int argc, char** argv) {
-
+    if (!glfwInit()) { // initialize GLFW
+        std::cerr << "Failed to initialize GLFW" << std::endl;
+        return -1;
+    }
     setupWindow(argc, argv);
     glutSetCursor(GLUT_CURSOR_NONE);
     
