@@ -10,14 +10,17 @@ out vec2 TexCoord;
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
+uniform mat4 modelview;
 
 void main()
 {
-    gl_Position = projection * view * model * vec4(aPos, 1.0);
+    mat4 mv = view * model;
+    gl_Position = projection * mv * vec4(aPos, 1.0);
     ourColor = aColor;
     TexCoord = aTexCoord;
 }
-#basic_fracment_shader
+
+#texture_fracment_shader
 #version 330 core
 out vec4 FragColor;
 
@@ -25,8 +28,22 @@ in vec3 ourColor;
 in vec2 TexCoord;
 
 uniform sampler2D ourTexture;
-
 void main()
 {
     FragColor = texture(ourTexture, TexCoord);
+}
+
+#basic_color_shader
+#version 330 core
+
+out vec4 FragColor;
+
+in vec3 FragPos;
+in vec3 Normal;
+
+uniform vec4 color;
+
+void main()
+{
+    FragColor = color;
 }

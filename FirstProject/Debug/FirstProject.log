@@ -1,6 +1,12 @@
 ﻿  Main.cpp
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': macro redefinition
 C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\dependecies\OPENGL\include\GLFW\glfw3.h(123): message : see previous definition of 'APIENTRY'
-C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(322,17): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(351,18): warning C4101: 'id': unreferenced local variable
-  FirstProject.vcxproj -> C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\Debug\FirstProject.exe
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(311,17): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(339,18): warning C4101: 'id': unreferenced local variable
+LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
+Main.obj : error LNK2019: unresolved external symbol _SOIL_load_image referenced in function "bool __cdecl loadTexture(char const *,unsigned int *)" (?loadTexture@@YA_NPBDPAI@Z)
+Main.obj : error LNK2019: unresolved external symbol _SOIL_free_image_data referenced in function "bool __cdecl loadTexture(char const *,unsigned int *)" (?loadTexture@@YA_NPBDPAI@Z)
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\dependecies\SOIL2\lib\windows\soil2-debug.lib : warning LNK4272: library machine type 'x64' conflicts with target machine type 'x86'
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\dependecies\asslimp\lib\x64\assimp-vc143-mt.lib : warning LNK4272: library machine type 'x64' conflicts with target machine type 'x86'
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\dependecies\OPENGL\lib-vc2022\glfw3.lib : warning LNK4272: library machine type 'x64' conflicts with target machine type 'x86'
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\Debug\FirstProject.exe : fatal error LNK1120: 2 unresolved externals

@@ -1,6 +1,17 @@
-﻿glew32s.lib(glew.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'glew32s.lib(glew.obj)' or at 'C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\x64\Debug\vc120.pdb'; linking object as if no debug info
-LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
-Main.obj : error LNK2019: unresolved external symbol SOIL_load_image referenced in function main
-Main.obj : error LNK2019: unresolved external symbol SOIL_free_image_data referenced in function main
-C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\dependecies\SOIL2\lib\windows\soil2-debug.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
-C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\x64\Debug\FirstProject.exe : fatal error LNK1120: 2 unresolved externals
+﻿  Main.cpp
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': macro redefinition
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\dependecies\OPENGL\include\GLFW\glfw3.h(123): message : see previous definition of 'APIENTRY'
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(255,17): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(413,54): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(419,58): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(428,55): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(433,58): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(445,59): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(477,53): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(502,51): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(532,54): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(560,51): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(680,25): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(681,26): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(691,18): warning C4101: 'id': unreferenced local variable
+  FirstProject.vcxproj -> C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\x64\Debug\FirstProject.exe
