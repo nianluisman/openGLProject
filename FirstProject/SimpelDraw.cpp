@@ -1,7 +1,9 @@
 #include "SimpleDraw.h"
 
+SimpleDraw::SimpleDraw(){}
+SimpleDraw::~SimpleDraw() {}
 
-void Draw::drawSphere(GLfloat radius, GLint slices, GLint stacks) {
+void SimpleDraw::drawSphere(GLfloat radius, GLint slices, GLint stacks) {
     for (int i = 0; i < slices; i++) {
         GLfloat theta1 = i * 2.0 * M_PI / slices;
         GLfloat theta2 = (i + 1) * 2.0 * M_PI / slices;
@@ -38,7 +40,7 @@ void Draw::drawSphere(GLfloat radius, GLint slices, GLint stacks) {
     }
 }
 
-void Draw::drawCube() {
+void SimpleDraw::drawCube() {
     // Front Face
     glBegin(GL_QUADS);
     glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, -1.0f, 1.0f);
@@ -73,7 +75,7 @@ void Draw::drawCube() {
     glEnd();
 }
 
-void Draw::drawCylinder() {
+void SimpleDraw::drawCylinder() {
     glBegin(GL_TRIANGLE_FAN);
     glVertex3f(0.0f, 1.0f, 0.0f); // Apex of the cone
     for (int i = 0; i <= 360; i += 10) {
@@ -91,7 +93,7 @@ void Draw::drawCylinder() {
     glEnd();
 }
 
-void Draw::drawTower(float height, float slices, float coneHeight, float radius, float coneRadius) {
+void SimpleDraw::drawTower(float height, float slices, float coneHeight, float radius, float coneRadius) {
     glBegin(GL_TRIANGLE_FAN);
     glVertex3f(0.0f, height, 0.0f);
     for (int i = 0; i <= slices; ++i) {
@@ -113,7 +115,7 @@ void Draw::drawTower(float height, float slices, float coneHeight, float radius,
     glEnd();
 }
 
-void Draw::drawPyramid() {
+void SimpleDraw::drawPyramid() {
     // Draw the front face
     glBegin(GL_TRIANGLES);
     glColor3f(0.1f, 0.5f, 1.0f);

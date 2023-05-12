@@ -1,3 +1,5 @@
+#pragma once
+
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include <math.h>
@@ -9,10 +11,14 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
-class Draw
+
+
+
+class SimpleDraw
 {
 public:
-	Draw() {};
+	SimpleDraw();
+	~SimpleDraw();
 	void drawCube();
 	void drawCylinder();
 	void drawTower(float height, float slices, float coneHeight, float radius, float coneRadius);

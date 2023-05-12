@@ -140,8 +140,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="bufferHandler.cpp" />
+    <ClCompile Include="ComplexDraw.cpp" />
     <ClCompile Include="objectLoader.cpp" />
-    <ClCompile Include="objloader.cpp" />
+    <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SimpelDraw.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="texureLoader.cpp" />
@@ -151,9 +152,11 @@
     <None Include="basic.shader" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AnimatedObjects.h" />
     <ClInclude Include="bufferHandler.h" />
+    <ClInclude Include="ComplexDraw.h" />
     <ClInclude Include="objectLoader.h" />
-    <ClInclude Include="objloader.h" />
+    <ClInclude Include="Shader.h" />
     <ClInclude Include="SimpleDraw.h" />
     <ClInclude Include="texureLoader.h" />
     <ClInclude Include="vertexBuffer.h" />

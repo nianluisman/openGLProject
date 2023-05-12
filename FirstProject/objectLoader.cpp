@@ -49,3 +49,46 @@ std::vector<float> objectLoader::loadModel(const char* filepath) {
 
     return verticesVector;
 }
+void objectLoader::setBuffers(const std::vector<float>& vertices,  std::string option ) {
+    if (option == "Color") {
+        glBindVertexArray(0);
+        glGenVertexArrays(1, _VAO);
+        glBindVertexArray(*_VAO);
+        glGenBuffers(1, &_VBO);
+
+        //// Bind the VBO and pass the vertex data to it
+        glBindBuffer(GL_ARRAY_BUFFER, _VBO);
+        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(GLfloat), &vertices.front(), GL_STATIC_DRAW);
+
+        //// Specify the vertex attribute pointers
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+
+        //// Enable the vertex attributes
+        glEnableVertexAttribArray(0);
+
+        glBindVertexArray(0);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    }
+    else if (option == "Texture") {
+
+        glGenVertexArrays(1, _VAO);
+        glBindVertexArray(*_VAO);
+
+        glGenBuffers(1, &_VBO);
+        //// Bind the VBO and pass the vertex data to it
+        glBindBuffer(GL_ARRAY_BUFFER, _VBO);
+        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), &vertices[0], GL_STATIC_DRAW);
+
+        //// Specify the vertex attribute pointers
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
+        glEnableVertexAttribArray(2);
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, (void*)(3 * sizeof(float)));
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+    }
+    else {
+        std::cout << "Buffer option not found" << std::endl;
+    }
+}

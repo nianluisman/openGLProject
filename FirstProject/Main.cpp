@@ -22,24 +22,27 @@
 #include <fstream>
 #include <sstream>
 
-#include "objloader.h"
-
 #include "vertexBuffer.h"
 #include "SimpleDraw.h"
 #include "objectLoader.h"
 #include "texureLoader.h"
+#include "Shader.h"
+#include "ComplexDraw.h"
+#include "AnimatedObjects.h"
 
-struct shaderPrograms {
-    unsigned int textureProgram;
-    unsigned int ColorProgram;
-};
+
+//struct shaderPrograms {
+//    unsigned int textureProgram;
+//    unsigned int ColorProgram;
+//};
 
 // angle for rotating triangle
 float angle = 0.0f;
-unsigned int shader, VAOCube, imageID_Floor, imageID_Wall, imageID_Door;
+unsigned int VAOCube, imageID_Floor, imageID_Wall, imageID_Door;
 shaderPrograms shaderprogram;
-unsigned int VAO_Treemodel, VBO_Treemodel, VAO_CarModel, VAO_Theapot, VBO_Theapot, VAO_table, VBO_table;
-std::vector<float> verticesTree , verticesCar, verticesTheapot, verticesTable;
+unsigned int VAO_Treemodel, VBO_Treemodel, VAO_CarModel, VAO_spoon, VBO_spoon, VAO_Theapot, VBO_Theapot, VAO_table, VBO_table;
+unsigned int VBO_Carmodel;
+std::vector<float> verticesTree , verticesCar, verticesSpoon, verticesTheapot, verticesTable;
 const aiMesh* meshModel;
 
 // Define global variables for the camera position and rotation
@@ -79,10 +82,10 @@ float lastY = 600.0 / 2.0;
 float fov = 45.0f;
 
 
-float carMoveNum = 0.0f;
-float switchCar = false;
-float colorNum = 0.0;
-float switchColor = false;
+//float carMoveNum = 0.0f;
+//float switchCar = false;
+//float colorNum = 0.0;
+//float switchColor = false;
 
 
 // Define the vertex data
@@ -133,121 +136,6 @@ MessageCallback(GLenum source,
         type, severity, message);
 }
 
-struct ShaderProgramSourse {
-    /*Programs read form the basic.shader file*/
-    std::string VertexProgram;
-    std::string TexureFracmentProgram;
-    std::string FracmentColorProgram;
-};
-
-static ShaderProgramSourse parseShaders(const std::string& filePath) {
-    std::fstream stream(filePath);
-    std::string line;
-    std::stringstream ss[3];
-    if (!stream.is_open()) {
-        std::cout << "could not open file";
-    }
-    enum class ShaderType {
-        NONE = -1,
-        VERTEX = 0,
-        TEXURESFRACMENT = 1,
-        BASICFRACMENT = 2
-    };
-    ShaderType shaderType = ShaderType::NONE;
-
-    while (getline(stream, line)) {
-        if (line.find("#vertex_shader") != std::string::npos) {
-            shaderType = ShaderType::VERTEX;
-        }
-        else if (line.find("#basic_color_shader") != std::string::npos) {
-            shaderType = ShaderType::BASICFRACMENT;
-        }
-        else if (line.find("#texture_fracment_shader") != std::string::npos) {
-            shaderType = ShaderType::TEXURESFRACMENT;
-        }
-        else {
-            ss[(int)shaderType] << line << '\n';
-        }
-    }
-    return { ss[0].str(), ss[1].str(), ss[2].str()};
-}
-
-
-static unsigned int CompileShader(unsigned int type, const std::string& sourse) {
-    unsigned int id = glCreateShader(type);
-    const char* src = sourse.c_str();
-    glShaderSource(id, 1, &src, NULL);
-    glCompileShader(id);
-
-    int result;
-    glGetShaderiv(id, GL_COMPILE_STATUS, &result);
-    if (result == GL_FALSE) {
-        int length;
-        glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
-        char* message = (char*)alloca(length * sizeof(char));
-        glGetShaderInfoLog(id, length, &length, message);
-        std::cout << "Falled to compile " << (type == GL_VERTEX_SHADER ? "vertex shader" : "fracment shader") << std::endl;
-        std::cout << message << std::endl;
-        return 0;
-    }
-    return id;
-}
-
-shaderPrograms creatShader(const ShaderProgramSourse shader){
-    unsigned int textureProgram =  glCreateProgram();
-    unsigned int colorProgram = glCreateProgram();
-    unsigned int vs = -1;
-    unsigned int tfs = -1;
-    unsigned int cfs = -1;
-    if (!shader.VertexProgram.empty()) {
-        vs = CompileShader(GL_VERTEX_SHADER, shader.VertexProgram);
-        glAttachShader(textureProgram, vs);
-        glAttachShader(colorProgram, vs);
-    }
-    if (!shader.TexureFracmentProgram.empty()) {
-    tfs = CompileShader(GL_FRAGMENT_SHADER, shader.TexureFracmentProgram);
-    glAttachShader(textureProgram, tfs);
-    }
-    if (!shader.FracmentColorProgram.empty()) {
-        cfs = CompileShader(GL_FRAGMENT_SHADER, shader.FracmentColorProgram);
-        glAttachShader(colorProgram, cfs);
-    }
-
-    glLinkProgram(textureProgram);
-    glValidateProgram(textureProgram);
-
-    glLinkProgram(colorProgram);
-    glValidateProgram(colorProgram);
-
-
-    int success;
-    glGetProgramiv(textureProgram, GL_LINK_STATUS, &success);
-    glGetProgramiv(colorProgram, GL_LINK_STATUS, &success);
-    if (!success) {
-        int logLength;
-        glGetProgramiv(textureProgram, GL_INFO_LOG_LENGTH, &logLength);
-
-        char* infoLog = (char*)alloca(logLength * sizeof(char));
-        glGetProgramInfoLog(textureProgram, logLength, NULL, infoLog);
-
-        std::string printableInfoLog;
-        for (int i = 0; i < logLength; i++) {
-            if (isprint(infoLog[i])) {
-                printableInfoLog += infoLog[i];
-            }
-        }
-
-        std::cout << "Program failed: " << printableInfoLog << std::endl;
-    }
-
-    glDeleteShader(vs);
-    glDeleteShader(tfs);
-    glDeleteShader(cfs);
-
-    return { textureProgram, colorProgram };
-}
-
-
 void changeSize(int w, int h) {
 
     if (h == 0)
@@ -275,100 +163,36 @@ void setupWindow(int argc, char** argv) {
 
     glewInit();
 }
-std::vector<glm::vec3> out_vertices = std::vector<glm::vec3>();
-std::vector<glm::vec2> out_uvs = std::vector<glm::vec2>();
-std::vector<glm::vec3> out_normals = std::vector<glm::vec3>();
 
 void initBuffers() {
+    objectLoader CarLoader = objectLoader(&VAO_CarModel, VBO_Carmodel);
 
-    objectLoader objLoader = objectLoader();
-    //set VAO
-    unsigned int VBO_Carmodel;
+    verticesCar = CarLoader.loadModel("objects/BMW_v3.obj");
+    CarLoader.setBuffers(verticesCar, "Color");
 
-    glBindVertexArray(0);
+    objectLoader SpoonLoader = objectLoader(&VAO_spoon, VBO_spoon);
 
-    verticesCar = objLoader.loadModel("objects/BMW_v3.obj");
-   // loadOBJ("objects/BMW_v3.obj", car_out_vertices, car_out_uvs, car_out_normals);
-   // loadAssImp("objects/BMW_v3.obj", car_indecs, car_out_vertices, car_out_uvs, car_out_normals);
-    glGenVertexArrays(1, &VAO_CarModel);
-    glBindVertexArray(VAO_CarModel);
-    glGenBuffers(1, &VBO_Carmodel);
+    verticesSpoon = CarLoader.loadModel("objects/NewSpoon.obj");
+    SpoonLoader.setBuffers(verticesSpoon, "Color");
 
-    //// Bind the VBO and pass the vertex data to it
-    glBindBuffer(GL_ARRAY_BUFFER, VBO_Carmodel);
-    glBufferData(GL_ARRAY_BUFFER, verticesCar.size() * sizeof(GLfloat), &verticesCar.front(), GL_STATIC_DRAW);
+    objectLoader TheapotLoader = objectLoader(&VAO_Theapot, VBO_Theapot);
+    verticesTheapot = TheapotLoader.loadModel("objects/teapot.obj");
 
-    //// Specify the vertex attribute pointers
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    TheapotLoader.setBuffers(verticesTheapot, "Color");
+    objectLoader TableLoader = objectLoader(&VAO_table, VBO_table);
 
-    //// Enable the vertex attributes
-    glEnableVertexAttribArray(0);
+    verticesTable = TableLoader.loadModel("objects/Table.obj");
+    TableLoader.setBuffers(verticesTable, "Color");
 
-    glBindVertexArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+   
+    objectLoader TreeLoader = objectLoader(&VAO_Treemodel, VBO_Treemodel);
 
-
-    verticesTheapot = objLoader.loadModel("objects/teapot.obj");
-    //loadOBJ("objects/teapot.obj", out_vertices, out_uvs, out_normals);
-
-    glGenVertexArrays(1, &VAO_Theapot);
-    glBindVertexArray(VAO_Theapot);
-    glGenBuffers(1, &VBO_Theapot);
-    //// Bind the VBO and pass the vertex data to it
-    glBindBuffer(GL_ARRAY_BUFFER, VBO_Theapot);
-    glBufferData(GL_ARRAY_BUFFER, verticesTheapot.size() * sizeof(float), &verticesTheapot.front(), GL_STATIC_DRAW);
-
-    //uto positonLocation = glGetUniformLocation(shaderprogram.textureProgram, "aPos");
-
-    //// Specify the vertex attribute pointers
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-
-
-    verticesTable = objLoader.loadModel("objects/Table.obj");
-    //loadOBJ("objects/teapot.obj", out_vertices, out_uvs, out_normals);
-
-    glGenVertexArrays(1, &VAO_table);
-    glBindVertexArray(VAO_table);
-    glGenBuffers(1, &VBO_table);
-    //// Bind the VBO and pass the vertex data to it
-    glBindBuffer(GL_ARRAY_BUFFER, VBO_table);
-    glBufferData(GL_ARRAY_BUFFER, verticesTable.size() * sizeof(float), &verticesTable.front(), GL_STATIC_DRAW);
-
-    //uto positonLocation = glGetUniformLocation(shaderprogram.textureProgram, "aPos");
-
-    //// Specify the vertex attribute pointers
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-
-    verticesTree = objLoader.loadModel("objects/Tree1.3ds");
+    verticesTree = TreeLoader.loadModel("objects/Tree1.3ds");
+    TreeLoader.setBuffers(verticesTree, "Texture");
     
-
-    glGenVertexArrays(1, &VAO_Treemodel);
-    glBindVertexArray(VAO_Treemodel);
-
-    glGenBuffers(1, &VBO_Treemodel);
-    //// Bind the VBO and pass the vertex data to it
-    glBindBuffer(GL_ARRAY_BUFFER, VBO_Treemodel);
-    glBufferData(GL_ARRAY_BUFFER, verticesTree.size() * sizeof(float), &verticesTree[0], GL_STATIC_DRAW);
-
-    //// Specify the vertex attribute pointers
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-
-    glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, (void*)(3 * sizeof(float)));
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    
-    
-
     
     vertexBuffer vb = vertexBuffer(vertices, sizeof(vertices));
+
     unsigned int VBOWall, EBOWall;
     glGenBuffers(1, &VBOWall);//make data buffer
     glGenBuffers(1, &EBOWall);// index buffer 
@@ -398,242 +222,13 @@ void initBuffers() {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-    //handel some models
-    //load tree
-
-
-
-
-   // glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-
-    //// Enable the vertex attributes
-    //glEnableVertexAttribArray(2);
-
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-  
-}
-void  drawTrees() {
-    // Set the model matrix for the first cube
-    glm::mat4 model = glm::mat4(1.0f);
-
-    glBindTexture(GL_TEXTURE_2D, imageID_Floor);
-
-    model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(0.f, -.5f, -4.0f));
-    model = glm::scale(model, glm::vec3(0.05, 0.05, 0.05));
-    model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-    glUniformMatrix4fv(glGetUniformLocation(shaderprogram.textureProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
-    glDrawArrays(GL_TRIANGLES, 0, verticesTree.size());
-
-    float offsetTree = 10.0f;
-    for (int i = 0; i < 5; i++) {
-        model = glm::translate(model, glm::vec3(offsetTree, 0.0f, 0.0f));
-        glUniformMatrix4fv(glGetUniformLocation(shaderprogram.textureProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
-        glDrawArrays(GL_TRIANGLES, 0, verticesTree.size());
-        offsetTree += 5.0f;
-    }
-
-    model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(0.f, -.5f, -5.0f));
-    model = glm::scale(model, glm::vec3(0.05, 0.05, 0.05));
-    model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-    glUniformMatrix4fv(glGetUniformLocation(shaderprogram.textureProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
-    glDrawArrays(GL_TRIANGLES, 0, verticesTree.size() );
-
-    for (int i = 0; i < 4; i++) {
-        model = glm::translate(model, glm::vec3(10, 0.0f, 0.0f)); // Translate to the right
-        glUniformMatrix4fv(glGetUniformLocation(shaderprogram.textureProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
-        glDrawArrays(GL_TRIANGLES, 0, verticesTree.size());
-        offsetTree += 5.0f;
-    }
-
-
-    model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(0.f, -.5f, 5.0f)); // Translate to the right
-    model = glm::scale(model, glm::vec3(0.05, 0.05, 0.05));
-    model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-    for (int i = 0; i < 5; i++) {
-        model = glm::translate(model, glm::vec3(-10.0f, 0.0f, -0.0f)); // Translate to the right
-        glUniformMatrix4fv(glGetUniformLocation(shaderprogram.textureProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
-        glDrawArrays(GL_TRIANGLES, 0, verticesTree.size() );
-        offsetTree -= 5.0f;
-    }
-    
+ 
 }
 
-void drawAndAnimateCar() {
-    glUseProgram(0);
-    glUseProgram(shaderprogram.ColorProgram);
-  //  glUniformMatrix4fv(glGetUniformLocation(shaderprogram.ColorProgram, "view"), 1, GL_FALSE, glm::value_ptr(view));
-    //glUniformMatrix4fv(glGetUniformLocation(shaderprogram.ColorProgram, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-    GLint colorLocation = glGetUniformLocation(shaderprogram.ColorProgram, "color");
-
-    glUniform4f(colorLocation, 1.0f, 0.0f, 0.0, 0.0);
-    glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(1.f, -.45f, carMoveNum));
-    model = glm::scale(model, glm::vec3(0.005, 0.005, 0.005));
-
-    if (switchCar) {
-        carMoveNum += 0.01f;
-        if (carMoveNum >= 2.0) {
-            switchCar = false;
-        }
-    }
-    else {
-        carMoveNum -= 0.01f;
-        if (carMoveNum <= -2.0) {
-            switchCar = true;
-        }
-    }
-    glUniformMatrix4fv(glGetUniformLocation(shaderprogram.textureProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
-   // glDrawElements(GL_TRIANGLES, sizeof(verticesCar.size()) * sizeof(GLfloat), GL_UNSIGNED_INT, 0);
-    glDrawArrays(GL_TRIANGLES,0 , verticesCar.size());
-
-
-}
-void drawHouse() {
-    glBindVertexArray(VAOCube);
-    Draw* draw = new Draw();
-    glm::mat4 model = glm::mat4(1.0f);
-    glBindTexture(GL_TEXTURE_2D, imageID_Wall);
-
-    model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(0.f, 0.0f, 0.0f)); 
-    glUniformMatrix4fv(glGetUniformLocation(shaderprogram.textureProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
-    glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(GLuint), GL_UNSIGNED_INT, 0);
-
-    glBindTexture(GL_TEXTURE_2D, imageID_Door);
-
-    model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(0.f, 0.0f, 0.3f)); 
-    model = glm::scale(model, glm::vec3(0.5f, 0.9f, 0.5f)); 
-    glUniformMatrix4fv(glGetUniformLocation(shaderprogram.textureProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
-    glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(GLuint), GL_UNSIGNED_INT, 0);
-
-    glUseProgram(0);
-    glUseProgram(shaderprogram.ColorProgram);
-    GLint colorLocation = glGetUniformLocation(shaderprogram.ColorProgram, "color");
-    glUniform4f(colorLocation, .52, 0.27, .08, 0.0);
-    model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(0.0f, 1.f, 0.0f)); 
-    model = glm::scale(model, glm::vec3(0.5, 0.5, 1));
-    glUniformMatrix4fv(glGetUniformLocation(shaderprogram.ColorProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
-    glPushMatrix();
-    draw->drawPyramid();
-    glPopMatrix();
-
-    model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(0.2f, 0.8f, 0.0f));
-    model = glm::scale(model, glm::vec3(0.3, 0.8, 0.3));
-    glUniformMatrix4fv(glGetUniformLocation(shaderprogram.ColorProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
-    glPushMatrix();
-    glUniform4f(colorLocation, 0.0f, 1.0f, 0.0, 0.0);
-    draw->drawCylinder();
-    model = glm::translate(model, glm::vec3(20.0f, 0.8f, 0.0f));
-    glUniformMatrix4fv(glGetUniformLocation(shaderprogram.ColorProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
-    glutPostRedisplay();
-    glPopMatrix();
-
-}
-
-float angleTheapot = 0.0f; // initial angle
-float rotationSpeed = glm::radians(45.0f); // rotation speed in radians per second
-float distance = 1.0f; // distance of translation in x-axis
-float x = 0.0f; // current x-position of the model
-float lastTime = 0.0f;
-void drawTheaPot() {
-    glUseProgram(0);
-    glUseProgram(shaderprogram.ColorProgram);
-    glBindVertexArray(VAO_Theapot);
-    GLint colorLocation = glGetUniformLocation(shaderprogram.ColorProgram, "color");
-    glUniform4f(colorLocation, 1.0f, 0.843f, 0.0f, 1.0f);
-    glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(3.f, 0.1f,3.0f ));
-    model = glm::scale(model, glm::vec3(0.2, 0.2, 0.2));
-
-    float currentTime = glfwGetTime();
-    float deltaTime = currentTime - lastTime;
-    lastTime = currentTime;
-
-    angleTheapot = fmod(angleTheapot + rotationSpeed * deltaTime, glm::radians(720.0f));
-    x = distance * sin(angleTheapot);
-
-    model = glm::rotate(model, angleTheapot, glm::vec3(0.0, 1.0f, 0.0f));
-    model = glm::translate(model, glm::vec3(x, 0.0f, 0.0f));
-
-
-    glUniformMatrix4fv(glGetUniformLocation(shaderprogram.ColorProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
-    glDrawArrays(GL_TRIANGLES, 0, verticesTheapot.size());
- }
-void drawTable() {
-    glUseProgram(0);
-    glUseProgram(shaderprogram.ColorProgram);
-    glBindVertexArray(VAO_table);
-    GLint colorLocation = glGetUniformLocation(shaderprogram.ColorProgram, "color");
-    glUniform4f(colorLocation, 0.5f, 0.5f, 0.5f, 1.0f);
-    glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(3.0f, -0.5f, 3.0f));
-    model = glm::scale(model, glm::vec3(0.2, 0.2, 0.2));
-    model = glm::rotate(model, glm::radians(-45.0f), glm::vec3(0.0f,1.0f,0.0f));
-    glUniformMatrix4fv(glGetUniformLocation(shaderprogram.ColorProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
-    glDrawArrays(GL_TRIANGLES, 0, verticesTable.size());
-}
-void drawFLoor() {
-    glBindVertexArray(VAOCube);
-    glBindTexture(GL_TEXTURE_2D, imageID_Floor);
-    // Set the model matrix for the first cube
-    glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(-0.5f, -0.5f, 0.0f)); // Translate to the left
-    model = glm::scale(model, glm::vec3(15, .1, 15));
-    model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, -0.0f));
-    glUniformMatrix4fv(glGetUniformLocation(shaderprogram.ColorProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
-    glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(GLuint), GL_UNSIGNED_INT, 0);
-    glutPostRedisplay();
-
-}
-
-void DrawAndAnimateLightPost() {
-    Draw* draw = new Draw();
-    glUseProgram(0);
-    glUseProgram(shaderprogram.ColorProgram);
-
-    GLint colorLocation = glGetUniformLocation(shaderprogram.ColorProgram, "color");
-    glUniform4f(colorLocation, colorNum - .2f, colorNum, 0.0, 0.0);
-    glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(-1.5f, .4f, 0.8f)); // Translate to the right
-    model = glm::scale(model, glm::vec3(0.2, 0.2, 0.2));
-    glUniformMatrix4fv(glGetUniformLocation(shaderprogram.ColorProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
-    glPushMatrix();
-    draw->drawSphere(1.0, 50, 50);
-    glPopMatrix();
-
-    glUniform4f(colorLocation, .52, 0.27, .07, 0.0);
-    model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(-1.5f, -0.5f, 0.8f)); // Translate to the right
-    model = glm::scale(model, glm::vec3(0.1, 0.8, 0.1));
-    glUniformMatrix4fv(glGetUniformLocation(shaderprogram.ColorProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
-    glPushMatrix();
-    draw->drawCylinder();
-    glPopMatrix();
-
-    if (switchColor) {
-        colorNum += 0.01f;
-        if (colorNum >= 0.8) {
-            switchColor = false;
-        }
-    }
-    else {
-        colorNum -= 0.01f;
-        if (colorNum <= 0.0) {
-            switchColor = true;
-        }
-    }
-}
-// timing
-float deltaTime = 0.0f;	// time between current frame and last frame
+float deltaTime = 0.0f;	
 float lastFrame = 0.0f;
 void viewkeyboard(unsigned char key, int x, int y) {
     float cameraSpeed = 0.5f;
@@ -648,6 +243,8 @@ void viewkeyboard(unsigned char key, int x, int y) {
 
 }
 void renderScene(void) {
+    ComplexDraw drawObject = ComplexDraw();
+    AnimatedObjects animadedObject = AnimatedObjects();
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -663,34 +260,26 @@ void renderScene(void) {
     glUniformMatrix4fv(glGetUniformLocation(shaderprogram.textureProgram, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
     
-   
-
-
-    drawFLoor();
-    drawHouse();
-
-
-   
+    drawObject.drawFLoor(VAOCube, shaderprogram, imageID_Floor, sizeof(vertices));
+    drawObject.drawHouse(VAOCube, shaderprogram, imageID_Door, imageID_Wall, sizeof(vertices));
+    
 
     //set view for color shader objects
     glUniformMatrix4fv(glGetUniformLocation(shaderprogram.ColorProgram, "view"), 1, GL_FALSE, glm::value_ptr(view));
     glUniformMatrix4fv(glGetUniformLocation(shaderprogram.ColorProgram, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
     glUseProgram(0);
 
-    drawTheaPot();
-    drawTable();
+    animadedObject.drawTheaPot(VAO_Theapot, shaderprogram, verticesTheapot.size());
+    drawObject.drawTable(VAO_table, shaderprogram, verticesTable.size());
+    
 
-    glUseProgram(shaderprogram.textureProgram);
-    glBindVertexArray(VAO_Treemodel);
-
-    drawTrees();
-   glBindVertexArray(VAO_CarModel);
-
-    drawAndAnimateCar();
+    drawObject.drawTrees(VAO_Treemodel, shaderprogram.textureProgram, imageID_Floor, verticesTree.size());
+   
+    animadedObject.drawAndAnimateCar(VAO_CarModel, shaderprogram, verticesCar.size());
 
     glBindVertexArray(0);
-    DrawAndAnimateLightPost();
-
+  
+    animadedObject.DrawAndAnimateLightPost(shaderprogram);
     glBindVertexArray(0);
     glutSwapBuffers();
 
@@ -745,9 +334,10 @@ int main(int argc, char** argv) {
     setupWindow(argc, argv);
     glutSetCursor(GLUT_CURSOR_NONE);
     
-    ShaderProgramSourse shaderProgram = parseShaders("basic.shader");
-    shaderprogram = creatShader(shaderProgram);
-    unsigned int id;
+    Shader shader = Shader();
+    ShaderProgramSourse shaderSource =  shader.parseShaders("basic.shader");
+    shaderprogram = shader.creatShader(shaderSource);
+   
     texureLoader textureload = texureLoader();
     bool sucsesFloor = textureload.loadTexture("Textures/Floor/aerial_rocks_02_diff_4k.jpg" ,&imageID_Floor);
  

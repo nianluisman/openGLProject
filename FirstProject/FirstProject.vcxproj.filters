@@ -39,7 +39,10 @@
     <ClCompile Include="texureLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="objloader.cpp">
+    <ClCompile Include="Shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ComplexDraw.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -64,7 +67,13 @@
     <ClInclude Include="texureLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="objloader.h">
+    <ClInclude Include="Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ComplexDraw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimatedObjects.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
