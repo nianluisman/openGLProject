@@ -26,6 +26,6 @@ public:
     void drawFLoor(unsigned int VAO, shaderPrograms shaderprogram, unsigned int texture_id, int size);
     void drawSpoon(unsigned int VAO, shaderPrograms shaderprogram, unsigned int text_id, int size);
     void drawMonkey(unsigned int VAO, shaderPrograms shaderprogram, unsigned int text_id, int size);
-   // void drawDonot(unsigned int VAO, shaderPrograms shaderprogram, unsigned int text_id, int size);
+    void drawTent(unsigned int VAO, shaderPrograms shaderprogram, unsigned int texture_id, int size);
 };
 

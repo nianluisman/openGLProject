@@ -29,6 +29,8 @@
 #include "Shader.h"
 #include "ComplexDraw.h"
 #include "AnimatedObjects.h"
+#include "Prism.h"
+#include "cube.h"
 
 
 //struct shaderPrograms {
@@ -45,6 +47,8 @@ unsigned int VAO_Corwn, VAO_Monkey, VAO_donot;
 unsigned int VBO_Carmodel, VBO_Crown, VBO_Monkey, VBO_donot;
 std::vector<float> verticesTree , verticesCar, verticesSpoon, verticesTheapot, verticesTable, Vertices_Corwn, Vetices_monkey, verticesDonot;
 const aiMesh* meshModel;
+Prism prism;
+cube cubeObj;
 
 // Define global variables for the camera position and rotation
 float camX = 0.0f;
@@ -81,40 +85,7 @@ float pitch = 0.0f;
 float lastX = 800.0f / 2.0;
 float lastY = 600.0 / 2.0;
 float fov = 45.0f;
-
-// Define the vertex data
-struct Vertex {
-    glm::vec3 position;
-    glm::vec3 color;
-    glm::vec2 texCoord;
-};
-
-float vertices[] = {
-    // position              color            texCoord
-      -0.5f, -0.5f, -0.5f     ,1.0f, 0.0f, 0.0f    ,0.0f, 0.0f, //vertex 0 
-      0.5f, -0.5f, -0.5f      ,0.0f, 1.0f, 0.0f    ,1.0f, 0.0f,
-      0.5f,  0.5f, -0.5f      ,0.0f, 0.0f, 1.0f    ,1.0f, 1.0f,
-      -0.5f,  0.5f, -0.5f     ,1.0f, 1.0f, 0.0f    ,0.0f, 1.0f,
-      -0.5f, -0.5f,  0.5f     ,0.0f, 1.0f, 1.0f    ,1.0f, 0.0f,
-      0.5f, -0.5f,  0.5f      ,1.0f, 0.0f, 1.0f    ,0.0f, 0.0f,
-      0.5f,  0.5f,  0.5f      ,0.5f, 0.5f, 0.5f    ,0.0f, 1.0f,
-      -0.5f,  0.5f,  0.5f     ,1.0f, 1.0f, 1.0f    ,1.0f, 1.0f
-};
-
-GLuint indices[] = {
-    0, 1, 2, // front
-    2, 3, 0,
-    1, 5, 6, // right
-    6, 2, 1,
-    7, 6, 5, // back
-    5, 4, 7,
-    4, 0, 3, // left  
-    3, 7, 4,
-    4, 5, 1, // bottom
-    1, 0, 4,
-    3, 2, 6, // top
-    6, 7, 3
-};
+bool firstMouse = true;
 
 void GLAPIENTRY
 MessageCallback(GLenum source,
@@ -191,38 +162,14 @@ void initBuffers() {
     objectLoader TreeLoader = objectLoader(&VAO_Treemodel, VBO_Treemodel);
     verticesTree = TreeLoader.loadModel("objects/Tree1.3ds");
     TreeLoader.setBuffers(verticesTree, "Texture");
-    
-    
-    vertexBuffer vb = vertexBuffer(vertices, sizeof(vertices));
 
-    unsigned int VBOWall, EBOWall;
-    glGenBuffers(1, &VBOWall);//make data buffer
-    glGenBuffers(1, &EBOWall);// index buffer 
-    glGenVertexArrays(1, &VAOCube);// vertex array buffer
+    prism = Prism();
 
-    glBindVertexArray(VAOCube);
+    prism.setBuffer();
 
-    glBindBuffer(GL_ARRAY_BUFFER, VBOWall);//bind to array buffer.
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    cubeObj = cube();
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBOWall);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-    glEnableVertexAttribArray(2);
-
-    glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(8 * sizeof(float)));
-    glEnableVertexAttribArray(3);
-
-    glBindVertexArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    cubeObj.setBuffer();
 }
 
 float deltaTime = 0.0f;	
@@ -257,8 +204,9 @@ void renderScene(void) {
     glUniformMatrix4fv(glGetUniformLocation(shaderprogram.textureProgram, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
     
-    drawObject.drawFLoor(VAOCube, shaderprogram, imageID_Floor, sizeof(vertices));
-    drawObject.drawHouse(VAOCube, shaderprogram, imageID_wood, imageID_Wall, sizeof(vertices));
+    drawObject.drawFLoor(cubeObj.VAOcube, shaderprogram, imageID_Floor, sizeof(cubeObj.vertices));
+    drawObject.drawHouse(cubeObj.VAOcube, shaderprogram, imageID_wood, imageID_Wall, sizeof(cubeObj.vertices));
+    drawObject.drawTent(prism.VAOprism, shaderprogram, 0, sizeof(prism.vertices));
     
 
     //set view for color shader objects
@@ -290,7 +238,7 @@ void renderScene(void) {
 
 }
 
-bool firstMouse = true;
+
 void mouse_callback(int xposIn, int yposIn)
 {
     float xpos = static_cast<float>(xposIn);

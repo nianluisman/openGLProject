@@ -114,6 +114,25 @@ void ComplexDraw::drawFLoor(unsigned int VAO, shaderPrograms shaderprogram, unsi
 
 }
 
+void ComplexDraw::drawTent(unsigned int VAO, shaderPrograms shaderprogram, unsigned int texture_id, int size) {
+    glUseProgram(0);
+    glUseProgram(shaderprogram.ColorProgram);
+    glBindVertexArray(VAO);
+
+    GLint colorLocation = glGetUniformLocation(shaderprogram.ColorProgram, "color");
+    glUniform4f(colorLocation, 0.0f, 0.39f, 0.0f, 1.0f);
+
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::translate(model, glm::vec3(2.5f, 0.0f, -3.0f));
+    model = glm::scale(model, glm::vec3(2, 1, 2));
+    model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    //model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+    glUniformMatrix4fv(glGetUniformLocation(shaderprogram.textureProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
+    glDrawElements(GL_TRIANGLES, size / sizeof(GLuint), GL_UNSIGNED_INT, 0);
+    glutPostRedisplay();
+
+}
+
 void ComplexDraw::drawTable(unsigned int VAO, shaderPrograms shaderprogram, int size) {
     glUseProgram(0);
     glUseProgram(shaderprogram.ColorProgram);
@@ -133,10 +152,9 @@ void ComplexDraw::drawSpoon(unsigned int VAO, shaderPrograms shaderprogram, unsi
     glUseProgram(shaderprogram.textureProgram);
     glBindVertexArray(VAO);
     glBindTexture(GL_TEXTURE_2D, text_id);
-    //GLint colorLocation = glGetUniformLocation(shaderprogram.ColorProgram, "color");
-    //glUniform4f(colorLocation, 0.5f, 0.5f, 0.5f, 1.0f);
+   
     glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(-3.0f, 0.5f, -3.0f));
+    model = glm::translate(model, glm::vec3(-3.0f, -0.4f, -3.0f));
     model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
     model = glm::rotate(model, glm::radians(-45.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     glUniformMatrix4fv(glGetUniformLocation(shaderprogram.textureProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
