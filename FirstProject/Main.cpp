@@ -78,8 +78,6 @@ glm::mat4 cameraTranslation;
 int windowWidth = 1300;
 int windowHeight = 1000;
 
-
-
 float yaw = -90.0f;	// yaw is initialized to -90.0 degrees since a yaw of 0.0 results in a direction vector pointing to the right so we initially rotate a bit to the left.
 float pitch = 0.0f;
 float lastX = 800.0f / 2.0;
@@ -91,7 +89,7 @@ float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 bool flyMode = false;
 
-glm::vec3 flyModePosition;
+glm::vec3 flyModePosition = glm::vec3(0.0f, 10.0f, 0.0f);
 float flyModeYaw;
 float flyModePitch;
 
@@ -180,8 +178,10 @@ void initBuffers() {
     cubeObj.setBuffer();
 }
 
-
-
+bool firstLocationFlyMode = false;
+glm::vec3 flyModeStartPosition = glm::vec3(5.96f, 3.40f, 12.93f); // Fixed starting position for fly mode
+float statYaw = -118;
+float startPitch = -5.1f;
 void viewkeyboard(unsigned char key, int x, int y) {
     float cameraSpeed = 0.5f;
     float rotationSpeed = 1.0f; 
@@ -192,10 +192,18 @@ void viewkeyboard(unsigned char key, int x, int y) {
         flyModePitch = pitch;
     }
 
-    if (key == 'v')
-        flyMode = !flyMode; 
+    if (key == 'v') {
+        flyMode = !flyMode;
+        firstLocationFlyMode = true;
+    }
 
-    
+    if (firstLocationFlyMode) {
+        cameraPos = flyModeStartPosition;
+        yaw = statYaw;
+        pitch = startPitch;
+        firstLocationFlyMode = false;
+    }
+    std::cout << "Pichs: " << flyModePitch << " YAS: " << flyModeYaw << " position: [" << cameraPos.x << ',' << cameraPos.y << ',' << cameraPos.z << "]" << std::endl;
     if (flyMode) {
         if (key == 'w')
             cameraPos += cameraSpeed * cameraFront;
