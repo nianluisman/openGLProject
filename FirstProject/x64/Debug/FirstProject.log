@@ -6,18 +6,14 @@ C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpe
 C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\AnimatedObjects.h(118,27): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
 C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\AnimatedObjects.h(148,1): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
 C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(108,17): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(237,82): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(238,72): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(241,105): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(243,84): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(245,80): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(247,78): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(249,91): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(251,85): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(298,25): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(299,26): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-  cube.cpp
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': macro redefinition
-C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\dependecies\OPENGL\include\GLFW\glfw3.h(123): message : see previous definition of 'APIENTRY'
-  Generating Code...
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(299,82): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(300,72): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(303,105): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(305,84): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(307,80): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(309,78): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(311,91): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(313,85): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(360,25): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(361,26): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
   FirstProject.vcxproj -> C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\x64\Debug\FirstProject.exe

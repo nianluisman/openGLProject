@@ -87,6 +87,14 @@ float lastY = 600.0 / 2.0;
 float fov = 45.0f;
 bool firstMouse = true;
 
+float deltaTime = 0.0f;
+float lastFrame = 0.0f;
+bool flyMode = false;
+
+glm::vec3 flyModePosition;
+float flyModeYaw;
+float flyModePitch;
+
 void GLAPIENTRY
 MessageCallback(GLenum source,
     GLenum type,
@@ -172,40 +180,97 @@ void initBuffers() {
     cubeObj.setBuffer();
 }
 
-float deltaTime = 0.0f;	
-float lastFrame = 0.0f;
+
+
 void viewkeyboard(unsigned char key, int x, int y) {
     float cameraSpeed = 0.5f;
-    if (key == 'w')
-        cameraPos += cameraSpeed * cameraFront;
-    if (key == 's')
-        cameraPos -= cameraSpeed * cameraFront;
-    if (key == 'a')
-        cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
-    if (key == 'd')
-        cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
-    // Check for rotation keys
-    if (key == 'j')
-        yaw -= rotationSpeed;
-    if (key == 'l')
-        yaw += rotationSpeed;
-    if (key == 'i')
-        pitch += rotationSpeed;
-    if (key == 'k')
-        pitch -= rotationSpeed;
+    float rotationSpeed = 1.0f; 
+    if (!flyMode) {
+      
+        flyModePosition = cameraPos;
+        flyModeYaw = yaw;
+        flyModePitch = pitch;
+    }
 
-    // make sure that when pitch is out of bounds, the screen doesn't get flipped
-    if (pitch > 89.0f)
-        pitch = 89.0f;
-    if (pitch < -89.0f)
-        pitch = -89.0f;
+    if (key == 'v')
+        flyMode = !flyMode; 
 
-    glm::vec3 front;
-    front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-    front.y = sin(glm::radians(pitch));
-    front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-    cameraFront = glm::normalize(front);
+    
+    if (flyMode) {
+        if (key == 'w')
+            cameraPos += cameraSpeed * cameraFront;
+        if (key == 's')
+            cameraPos -= cameraSpeed * cameraFront;
+        if (key == 'a')
+            cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+        if (key == 'd')
+            cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+
+        if (key == 'j')
+            yaw -= rotationSpeed;
+        if (key == 'l')
+            yaw += rotationSpeed;
+        if (key == 'i')
+            pitch += rotationSpeed;
+        if (key == 'k')
+            pitch -= rotationSpeed;
+
+       
+        if (pitch > 89.0f)
+            pitch = 89.0f;
+        if (pitch < -89.0f)
+            pitch = -89.0f;
+
+        glm::vec3 front;
+        front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+        front.y = sin(glm::radians(pitch));
+        front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+        cameraFront = glm::normalize(front);
+    }
+    else {
+        if (key == 'w')
+            flyModePosition += cameraSpeed * cameraFront;
+        if (key == 's')
+            flyModePosition -= cameraSpeed * cameraFront;
+        if (key == 'a')
+            flyModePosition -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+        if (key == 'd')
+            flyModePosition += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+
+        if (key == 'j')
+            flyModeYaw -= rotationSpeed;
+        if (key == 'l')
+            flyModeYaw += rotationSpeed;
+        if (key == 'i')
+            flyModePitch += rotationSpeed;
+        if (key == 'k')
+            flyModePitch -= rotationSpeed;
+
+       
+        if (flyModePitch > 89.0f)
+            flyModePitch = 89.0f;
+        if (flyModePitch < -89.0f)
+            flyModePitch = -89.0f;
+
+        glm::vec3 front;
+        front.x = cos(glm::radians(flyModeYaw)) * cos(glm::radians(flyModePitch));
+        front.y = sin(glm::radians(flyModePitch));
+        front.z = sin(glm::radians(flyModeYaw)) * cos(glm::radians(flyModePitch));
+        cameraFront = glm::normalize(front);
+    }
+   
+    if (!flyMode) {
+        cameraPos = flyModePosition;
+        yaw = flyModeYaw;
+        pitch = flyModePitch;
+    }
+
+    
+    if (!flyMode)
+        cameraPos.y = 0.0f;
 }
+
+
 void renderScene(void) {
     ComplexDraw drawObject = ComplexDraw();
     AnimatedObjects animadedObject = AnimatedObjects();
@@ -219,7 +284,7 @@ void renderScene(void) {
     projection = glm::perspective(glm::radians(45.0f), (float)windowWidth / (float)windowHeight, 0.1f, 100.0f);
     glUseProgram(shaderprogram.textureProgram);
 
-    //set view for textures shader objects
+    
     glUniformMatrix4fv(glGetUniformLocation(shaderprogram.textureProgram, "view"), 1, GL_FALSE, glm::value_ptr(view));
     glUniformMatrix4fv(glGetUniformLocation(shaderprogram.textureProgram, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
@@ -229,7 +294,7 @@ void renderScene(void) {
     drawObject.drawTent(prism.VAOprism, shaderprogram, 0, sizeof(prism.vertices));
     
 
-    //set view for color shader objects
+   
     glUniformMatrix4fv(glGetUniformLocation(shaderprogram.ColorProgram, "view"), 1, GL_FALSE, glm::value_ptr(view));
     glUniformMatrix4fv(glGetUniformLocation(shaderprogram.ColorProgram, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
     glUseProgram(0);
