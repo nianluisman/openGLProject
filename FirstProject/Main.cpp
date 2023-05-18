@@ -184,7 +184,27 @@ void viewkeyboard(unsigned char key, int x, int y) {
         cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
     if (key == 'd')
         cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+    // Check for rotation keys
+    if (key == 'j')
+        yaw -= rotationSpeed;
+    if (key == 'l')
+        yaw += rotationSpeed;
+    if (key == 'i')
+        pitch += rotationSpeed;
+    if (key == 'k')
+        pitch -= rotationSpeed;
 
+    // make sure that when pitch is out of bounds, the screen doesn't get flipped
+    if (pitch > 89.0f)
+        pitch = 89.0f;
+    if (pitch < -89.0f)
+        pitch = -89.0f;
+
+    glm::vec3 front;
+    front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+    front.y = sin(glm::radians(pitch));
+    front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+    cameraFront = glm::normalize(front);
 }
 void renderScene(void) {
     ComplexDraw drawObject = ComplexDraw();
