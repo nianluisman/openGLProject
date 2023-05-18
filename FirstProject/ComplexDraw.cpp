@@ -143,20 +143,6 @@ void ComplexDraw::drawSpoon(unsigned int VAO, shaderPrograms shaderprogram, unsi
     glDrawArrays(GL_TRIANGLES, 0, size);
 }
 
-void ComplexDraw::drawCrown(unsigned int VAO, shaderPrograms shaderprogram, unsigned int text_id, int size) {
-    glUseProgram(0);
-    glUseProgram(shaderprogram.ColorProgram);
-    glBindVertexArray(VAO);
-    GLint colorLocation = glGetUniformLocation(shaderprogram.ColorProgram, "color");
-    glUniform4f(colorLocation, 1.0f, 0.843f, 0.0f, 1.0f);
-    glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(-4.0f, 0.5f, 0.0f));
-    model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-    model = glm::rotate(model, glm::radians(-45.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-    glUniformMatrix4fv(glGetUniformLocation(shaderprogram.ColorProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
-    glDrawArrays(GL_TRIANGLES, 0, size);
-}
-
 void ComplexDraw::drawMonkey(unsigned int VAO, shaderPrograms shaderprogram, unsigned int text_id, int size) {
     glUseProgram(0);
     glUseProgram(shaderprogram.ColorProgram);
@@ -166,22 +152,22 @@ void ComplexDraw::drawMonkey(unsigned int VAO, shaderPrograms shaderprogram, uns
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(-5.0f, 0.5f, 3.0f));
     model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));
-    model = glm::rotate(model, glm::radians(-45.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    model = glm::rotate(model, glm::radians(45.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     glUniformMatrix4fv(glGetUniformLocation(shaderprogram.ColorProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
     glDrawArrays(GL_TRIANGLES, 0, size);
 }
 
-void ComplexDraw::drawDonot(unsigned int VAO, shaderPrograms shaderprogram, unsigned int text_id, int size) {
-    glUseProgram(0);
-    glUseProgram(shaderprogram.textureProgram);
-    glBindVertexArray(VAO);
-    glBindTexture(GL_TEXTURE_2D, text_id);
-    GLint colorLocation = glGetUniformLocation(shaderprogram.textureProgram, "color");
-    glUniform4f(colorLocation, 0.5f, 0.0f, 0.5f, 1.0f);
-    glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(6.0f, 0.5f, 3.0f));
-    model = glm::scale(model, glm::vec3(.5, 0.5, .5));
-    model = glm::rotate(model, glm::radians(-45.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-    glUniformMatrix4fv(glGetUniformLocation(shaderprogram.textureProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
-    glDrawArrays(GL_TRIANGLES, 0, size);
-}
+//void ComplexDraw::drawDonot(unsigned int VAO, shaderPrograms shaderprogram, unsigned int text_id, int size) {
+//    glUseProgram(0);
+//    glUseProgram(shaderprogram.textureProgram);
+//    glBindVertexArray(VAO);
+//    glBindTexture(GL_TEXTURE_2D, text_id);
+//    GLint colorLocation = glGetUniformLocation(shaderprogram.textureProgram, "color");
+//    glUniform4f(colorLocation, 0.5f, 0.0f, 0.5f, 1.0f);
+//    glm::mat4 model = glm::mat4(1.0f);
+//    model = glm::translate(model, glm::vec3(6.0f, 0.5f, 3.0f));
+//    model = glm::scale(model, glm::vec3(.5, 0.5, .5));
+//    model = glm::rotate(model, glm::radians(-45.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+//    glUniformMatrix4fv(glGetUniformLocation(shaderprogram.textureProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
+//    glDrawArrays(GL_TRIANGLES, 0, size);
+//}

@@ -274,14 +274,11 @@ void renderScene(void) {
    
     drawObject.drawSpoon(VAO_spoon,shaderprogram,imageID_Stone,verticesSpoon.size());
 
-    drawObject.drawCrown(VAO_Corwn, shaderprogram, 0, Vertices_Corwn.size());
+    animadedObject.drawCrown(VAO_Corwn, shaderprogram, 0, Vertices_Corwn.size());
 
     drawObject.drawMonkey(VAO_Monkey, shaderprogram, 0, Vetices_monkey.size());
 
-    drawObject.drawDonot(VAO_donot, shaderprogram, imageID_water, verticesDonot.size());
-
-
-
+    animadedObject.drawDonot(VAO_donot, shaderprogram, imageID_water, verticesDonot.size());
 
     animadedObject.drawAndAnimateCar(VAO_CarModel, shaderprogram, verticesCar.size());
 
