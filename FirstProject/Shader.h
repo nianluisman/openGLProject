@@ -12,18 +12,19 @@
 struct shaderPrograms {
     unsigned int textureProgram;
     unsigned int ColorProgram;
+    unsigned int shinyProgram;
 };
 
 struct ShaderProgramSourse {
     /*Programs read form the basic.shader file*/
-    std::string VertexProgram;
-    std::string TexureFracmentProgram;
-    std::string FracmentColorProgram;
+    std::string VertexSourse;
+    std::string TexureFracmentSourse;
+    std::string FracmentColorSourse;
+    std::string ShinyShaderSourse;
 };
 
 class Shader
 {
-
 public:
     Shader(){}
     ~Shader(){}

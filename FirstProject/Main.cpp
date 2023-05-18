@@ -38,11 +38,12 @@
 
 // angle for rotating triangle
 float angle = 0.0f;
-unsigned int VAOCube, imageID_Floor, imageID_Wall, imageID_Door;
+unsigned int VAOCube, imageID_Floor, imageID_Wall, imageID_Stone, imageID_water, imageID_wood;
 shaderPrograms shaderprogram;
 unsigned int VAO_Treemodel, VBO_Treemodel, VAO_CarModel, VAO_spoon, VBO_spoon, VAO_Theapot, VBO_Theapot, VAO_table, VBO_table;
-unsigned int VBO_Carmodel;
-std::vector<float> verticesTree , verticesCar, verticesSpoon, verticesTheapot, verticesTable;
+unsigned int VAO_Corwn, VAO_Monkey, VAO_donot;
+unsigned int VBO_Carmodel, VBO_Crown, VBO_Monkey, VBO_donot;
+std::vector<float> verticesTree , verticesCar, verticesSpoon, verticesTheapot, verticesTable, Vertices_Corwn, Vetices_monkey, verticesDonot;
 const aiMesh* meshModel;
 
 // Define global variables for the camera position and rotation
@@ -80,13 +81,6 @@ float pitch = 0.0f;
 float lastX = 800.0f / 2.0;
 float lastY = 600.0 / 2.0;
 float fov = 45.0f;
-
-
-//float carMoveNum = 0.0f;
-//float switchCar = false;
-//float colorNum = 0.0;
-//float switchColor = false;
-
 
 // Define the vertex data
 struct Vertex {
@@ -153,6 +147,7 @@ void changeSize(int w, int h) {
 
     glMatrixMode(GL_MODELVIEW);
 }
+
 void setupWindow(int argc, char** argv) {
     glutInit(&argc, argv);
 
@@ -166,27 +161,34 @@ void setupWindow(int argc, char** argv) {
 
 void initBuffers() {
     objectLoader CarLoader = objectLoader(&VAO_CarModel, VBO_Carmodel);
-
     verticesCar = CarLoader.loadModel("objects/BMW_v3.obj");
     CarLoader.setBuffers(verticesCar, "Color");
 
     objectLoader SpoonLoader = objectLoader(&VAO_spoon, VBO_spoon);
-
-    verticesSpoon = CarLoader.loadModel("objects/NewSpoon.obj");
-    SpoonLoader.setBuffers(verticesSpoon, "Color");
+    verticesSpoon = CarLoader.loadModel("objects/NewSpoon2.obj");
+    SpoonLoader.setBuffers(verticesSpoon, "Texture");
 
     objectLoader TheapotLoader = objectLoader(&VAO_Theapot, VBO_Theapot);
     verticesTheapot = TheapotLoader.loadModel("objects/teapot.obj");
-
     TheapotLoader.setBuffers(verticesTheapot, "Color");
-    objectLoader TableLoader = objectLoader(&VAO_table, VBO_table);
 
+    objectLoader TableLoader = objectLoader(&VAO_table, VBO_table);
     verticesTable = TableLoader.loadModel("objects/Table.obj");
     TableLoader.setBuffers(verticesTable, "Color");
 
-   
-    objectLoader TreeLoader = objectLoader(&VAO_Treemodel, VBO_Treemodel);
+    objectLoader CrownLoader = objectLoader(&VAO_Corwn, VBO_Crown);
+    Vertices_Corwn = CrownLoader.loadModel("objects/crown.obj");
+    CrownLoader.setBuffers(Vertices_Corwn, "Color");
 
+    objectLoader MonkeyLoader = objectLoader(&VAO_Monkey, VBO_Monkey);
+    Vetices_monkey = MonkeyLoader.loadModel("objects/monkey.obj");
+    MonkeyLoader.setBuffers(Vetices_monkey, "Color");
+
+    objectLoader DonotLoader = objectLoader(&VAO_donot, VBO_donot);
+    verticesDonot = DonotLoader.loadModel("objects/donot2.obj");
+    DonotLoader.setBuffers(verticesDonot, "Texture");
+
+    objectLoader TreeLoader = objectLoader(&VAO_Treemodel, VBO_Treemodel);
     verticesTree = TreeLoader.loadModel("objects/Tree1.3ds");
     TreeLoader.setBuffers(verticesTree, "Texture");
     
@@ -221,11 +223,6 @@ void initBuffers() {
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-    glBindVertexArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
- 
 }
 
 float deltaTime = 0.0f;	
@@ -261,7 +258,7 @@ void renderScene(void) {
 
     
     drawObject.drawFLoor(VAOCube, shaderprogram, imageID_Floor, sizeof(vertices));
-    drawObject.drawHouse(VAOCube, shaderprogram, imageID_Door, imageID_Wall, sizeof(vertices));
+    drawObject.drawHouse(VAOCube, shaderprogram, imageID_wood, imageID_Wall, sizeof(vertices));
     
 
     //set view for color shader objects
@@ -275,6 +272,17 @@ void renderScene(void) {
 
     drawObject.drawTrees(VAO_Treemodel, shaderprogram.textureProgram, imageID_Floor, verticesTree.size());
    
+    drawObject.drawSpoon(VAO_spoon,shaderprogram,imageID_Stone,verticesSpoon.size());
+
+    drawObject.drawCrown(VAO_Corwn, shaderprogram, 0, Vertices_Corwn.size());
+
+    drawObject.drawMonkey(VAO_Monkey, shaderprogram, 0, Vetices_monkey.size());
+
+    drawObject.drawDonot(VAO_donot, shaderprogram, imageID_water, verticesDonot.size());
+
+
+
+
     animadedObject.drawAndAnimateCar(VAO_CarModel, shaderprogram, verticesCar.size());
 
     glBindVertexArray(0);
@@ -343,7 +351,11 @@ int main(int argc, char** argv) {
  
     bool sucsesWall = textureload.loadTexture("Textures/wall/Tileable_Red_Brick_Texturise.jpg", &imageID_Wall);
 
-    bool sucsesDoor = textureload.loadTexture("Textures/door/Plastic_004_basecolor.jpg", &imageID_Door);
+    bool sucsesDoor = textureload.loadTexture("Textures/door/Plastic_004_basecolor.jpg", &imageID_Stone);
+
+    bool sucsesWater = textureload.loadTexture("Textures/Water/Pool_Water_Texture_Diff.jpg", &imageID_water);
+
+    bool sucsesWood = textureload.loadTexture("Textures/wood/Substance_Graph_BaseColor.jpg", &imageID_wood);
 
     initBuffers();
 

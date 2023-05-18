@@ -1,12 +1,44 @@
-﻿  Main.cpp
+﻿  ComplexDraw.cpp
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': macro redefinition
 C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\dependecies\OPENGL\include\GLFW\glfw3.h(123): message : see previous definition of 'APIENTRY'
-C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(311,17): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(339,18): warning C4101: 'id': unreferenced local variable
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\ComplexDraw.cpp(79,51): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+  objectLoader.cpp
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': macro redefinition
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\dependecies\OPENGL\include\GLFW\glfw3.h(123): message : see previous definition of 'APIENTRY'
+  Shader.cpp
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': macro redefinition
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\dependecies\OPENGL\include\GLFW\glfw3.h(123): message : see previous definition of 'APIENTRY'
+  SimpelDraw.cpp
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': macro redefinition
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\dependecies\OPENGL\include\GLFW\glfw3.h(123): message : see previous definition of 'APIENTRY'
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\SimpelDraw.cpp(8,24): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\SimpelDraw.cpp(9,24): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\SimpelDraw.cpp(12,26): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\SimpelDraw.cpp(13,26): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\SimpelDraw.cpp(100,21): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\SimpelDraw.cpp(110,21): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  Main.cpp
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': macro redefinition
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\dependecies\OPENGL\include\GLFW\glfw3.h(123): message : see previous definition of 'APIENTRY'
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\AnimatedObjects.h(71,27): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\AnimatedObjects.h(101,1): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(136,17): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(319,25): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\FirstProject\Main.cpp(320,26): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  texureLoader.cpp
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': macro redefinition
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\dependecies\OPENGL\include\GLFW\glfw3.h(123): message : see previous definition of 'APIENTRY'
+  Generating Code...
 LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
-Main.obj : error LNK2019: unresolved external symbol _SOIL_load_image referenced in function "bool __cdecl loadTexture(char const *,unsigned int *)" (?loadTexture@@YA_NPBDPAI@Z)
-Main.obj : error LNK2019: unresolved external symbol _SOIL_free_image_data referenced in function "bool __cdecl loadTexture(char const *,unsigned int *)" (?loadTexture@@YA_NPBDPAI@Z)
+objectLoader.obj : error LNK2019: unresolved external symbol "public: __thiscall Assimp::Importer::Importer(void)" (??0Importer@Assimp@@QAE@XZ) referenced in function "public: class std::vector<float,class std::allocator<float> > __thiscall objectLoader::loadModel(char const *)" (?loadModel@objectLoader@@QAE?AV?$vector@MV?$allocator@M@std@@@std@@PBD@Z)
+objectLoader.obj : error LNK2019: unresolved external symbol "public: __thiscall Assimp::Importer::~Importer(void)" (??1Importer@Assimp@@QAE@XZ) referenced in function "public: class std::vector<float,class std::allocator<float> > __thiscall objectLoader::loadModel(char const *)" (?loadModel@objectLoader@@QAE?AV?$vector@MV?$allocator@M@std@@@std@@PBD@Z)
+objectLoader.obj : error LNK2019: unresolved external symbol "public: struct aiScene const * __thiscall Assimp::Importer::ReadFile(char const *,unsigned int)" (?ReadFile@Importer@Assimp@@QAEPBUaiScene@@PBDI@Z) referenced in function "public: class std::vector<float,class std::allocator<float> > __thiscall objectLoader::loadModel(char const *)" (?loadModel@objectLoader@@QAE?AV?$vector@MV?$allocator@M@std@@@std@@PBD@Z)
+objectLoader.obj : error LNK2019: unresolved external symbol "public: char const * __thiscall Assimp::Importer::GetErrorString(void)const " (?GetErrorString@Importer@Assimp@@QBEPBDXZ) referenced in function "public: class std::vector<float,class std::allocator<float> > __thiscall objectLoader::loadModel(char const *)" (?loadModel@objectLoader@@QAE?AV?$vector@MV?$allocator@M@std@@@std@@PBD@Z)
+Main.obj : error LNK2019: unresolved external symbol _glfwInit referenced in function _main
+Main.obj : error LNK2019: unresolved external symbol _glfwGetTime referenced in function "public: void __thiscall AnimatedObjects::drawTheaPot(unsigned int,struct shaderPrograms,int)" (?drawTheaPot@AnimatedObjects@@QAEXIUshaderPrograms@@H@Z)
+texureLoader.obj : error LNK2019: unresolved external symbol _SOIL_load_image referenced in function "public: bool __thiscall texureLoader::loadTexture(char const *,unsigned int *)" (?loadTexture@texureLoader@@QAE_NPBDPAI@Z)
+texureLoader.obj : error LNK2019: unresolved external symbol _SOIL_free_image_data referenced in function "public: bool __thiscall texureLoader::loadTexture(char const *,unsigned int *)" (?loadTexture@texureLoader@@QAE_NPBDPAI@Z)
 C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\dependecies\SOIL2\lib\windows\soil2-debug.lib : warning LNK4272: library machine type 'x64' conflicts with target machine type 'x86'
 C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\dependecies\asslimp\lib\x64\assimp-vc143-mt.lib : warning LNK4272: library machine type 'x64' conflicts with target machine type 'x86'
 C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\dependecies\OPENGL\lib-vc2022\glfw3.lib : warning LNK4272: library machine type 'x64' conflicts with target machine type 'x86'
-C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\Debug\FirstProject.exe : fatal error LNK1120: 2 unresolved externals
+C:\Users\nianl\OneDrive\Documenten\.windesheim\ComputerGrafics\opengl\MyfirstOpenGL\FirstProject\Debug\FirstProject.exe : fatal error LNK1120: 8 unresolved externals

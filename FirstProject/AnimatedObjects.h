@@ -27,7 +27,6 @@ class AnimatedObjects
 private:
 
 public:
-
     void drawAndAnimateCar(unsigned int VAO, shaderPrograms shaderProgram, int size) {
         glBindVertexArray(VAO);
         glUseProgram(0);
@@ -52,7 +51,6 @@ public:
                 switchCar = true;
             }
         }
-        std::cout << carMoveNum << std::endl;
         glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ColorProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
         glDrawArrays(GL_TRIANGLES, 0, size);
     }
